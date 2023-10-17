@@ -3,8 +3,12 @@ import { useState } from "react"
 import { Link } from "react-router-dom";
 import {AiFillEyeInvisible, AiFillEye} from "react-icons/ai"
 import OAuth from "../components/OAuth";
-
-export default function SignUp() {
+import {getAuth,createUserWithEmailAndPassword,updateProfile} from "firebase/auth";
+import {db}  from "../firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import {toast}  from "react-toastify"
+ export default function SignUp() {
   const [showPassword,setShowPassword]= useState(false);
   const [formData, setFormData]= useState({
     name:"",
@@ -12,11 +16,33 @@ export default function SignUp() {
     password:"",
   })
   const { name, email, password } =formData;
+  const navigate= useNavigate();
   function onChange(e){
      setFormData((prevState)=>({
       ...prevState,
      [e.target.id]: e.target.value,
      }));
+  }
+  async function onSubmit(e){
+      e.preventDefault()
+      try {
+        const auth=getAuth()
+        const userCredential=await createUserWithEmailAndPassword(auth,email,password)
+        updateProfile(user.currentUser,{
+          displayName: name
+        })
+        const user= userCredential.user
+        const formDataCopy={...formData}
+        delete formDataCopy.password
+        formDataCopy.timestamp=serverTimestamp();
+
+        await setDoc(doc(db,"users",user.uid
+        ), formDataCopy)
+        // toast.success("Sign up was successful")
+        navigate("/");
+      } catch (error) {
+         toast.error("Something went wrong with the registration")
+      }
   }
   return (
       <section>
@@ -28,7 +54,7 @@ export default function SignUp() {
              className="w-full rounded-2*1" />          
           </div>
             <div className="w-full md;w-[67%] lg:w-[40%] lg:ml-20">
-              <form>
+              <form onSubmit={onSubmit}>
               <input
 
                type="text"
@@ -69,7 +95,7 @@ export default function SignUp() {
                   Have a account?
                   <Link to="/sign-in" className="text-red-600 hover:text-red-700
                   transition duration-200 ease-in-out ml-1"
-                  >Sign in</Link>
+                  >Sign in </Link>
                 </p>
                 <p>
                   <Link to="/forgot-password"
