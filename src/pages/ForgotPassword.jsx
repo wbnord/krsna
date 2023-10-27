@@ -11,7 +11,7 @@ export default function ForgotPassword() {
   }
 
   async function onSubmit(e){
-    e.preventdefault();
+    e.preventDefault();
     try {
       const auth=getAuth()
       await sendPasswordResetEmail(auth,email)
@@ -53,6 +53,9 @@ export default function ForgotPassword() {
                   transition duration-200 ease-in-out">
                   Sign in instead
                   </Link>
+                  </p>
+                </div>
+      
                    <button className="w-full bg-blue-600 text-white px-7
               py-3 text-sm font-medium uppercase rounded shadow-md
               hover:bg-blue-700 transition duration-150 ease-in-out
@@ -63,8 +66,7 @@ export default function ForgotPassword() {
               before:border-gray-300 after:flex-1 after:border-gray-300">
                 <p className="text-center
                 font semibold mx-4">OR</p>
-              </div>
-                </p>
+              
                </div>
                <OAuth />
               </form>
