@@ -1,5 +1,5 @@
 import React from 'react'
-import Spinner from "../assets/svg/spinner.svg"
+import Spinner from "../assets/svg/spinner.svg";
 
 export default function spinner() {
   return (
