@@ -23,7 +23,9 @@ export default function CreatingListing()
          bedrooms:1,
          bathrooms:1,
          parking:true,
-         furnished:false,
+         furnished:false
+         
+         ,
          address:"",
          description:"",
          offer:true,
