@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 import {
   collection,
- 
+  deleteDoc,
   getDocs,
   orderBy,
   query,
@@ -79,12 +79,25 @@ export default function Profile()
                data: doc.data(),
             })
         })
-        listings(listings);
+        setListings(listings);
         setLoading(false);
       }
       fetchUserListings();
     },[auth.currentUser.uid]);    
-  
+   async function onDelete(listingID){
+    if(window.confirm("Are you want to delete?")){
+      await deleteDoc(doc(db,"listings",listingID));
+      const updatedListings = listings.filter(
+        (listing) => listing.id !== listingID
+      )
+    }
+    setListings();
+    toast.success("Successfully deleted the listing");
+  }
+
+  function onEdit(listingID){
+    navigate(`/edit-listings/${listingID}`)
+  }
     return (
       <>
       <section className="max-w-6xl mx-auto flex justify-center items-center flex-col">
@@ -158,11 +171,13 @@ export default function Profile()
                  key={listing.id}
                  id={listing.id}
                  listing={listing.data}
-              
+                 onDelete={()=>onDelete(listing.id)}
+                 onEdit={()=>onEdit(listing.id)}
               
               />
              ))}
           </ul>
+
            </>
    
          )
