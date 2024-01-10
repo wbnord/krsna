@@ -27,17 +27,18 @@ export default function ListingItem({ listing, id,onEdit,onDelete}) {
             text-gray-600 truncate">{listing.address}</p>
           </div>
           <p className="font-semibold mt-2 text-xl truncate">{listing.name}</p>
-          <p className="text-[#457b9d] mt-2 font-semibold">
+          <p className="text-[#457b9d] mt-2 font-semibold"></p>
             ${listing.offer 
           ? listing.discountPrice 
-             .toString()
-             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+             
+          
+             
           
          : listing.regularPrice
-             .toString()
-             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          
+            }
         {listing.type ==="rent" && "/month" }
-        </p>
+        
         <div className="flex items-center mt-[10px] space-x-3">
           <div className="flex items-center space-x-1">
             <p className="font-bold text-xs">{listing.bedrooms > 1 ? `${listing.bedrooms}
@@ -46,13 +47,19 @@ export default function ListingItem({ listing, id,onEdit,onDelete}) {
             </p>
             <div className="">
               <p className="font-bold text-xs">
-                {listings.bathrooms > 1 ? `${listings.bathrooms} Baths`
+                {listing.bathrooms > 1 ? `${listing.bathrooms} Baths`
                 :"1 Bath"}
               </p>
             </div>
           </div>
         </div>
         </div >
+        {onDelete && (
+        <FaTrash
+          className="absolute bottom-2 right-2 h-[14px] cursor-pointer text-red-500"
+          onClick={() => onDelete(listing.id)}
+        />
+      )}
           {onEdit && (
             <MdEdit className="absolute bottom-2 right-7
             h-4 cursor-pointer"
